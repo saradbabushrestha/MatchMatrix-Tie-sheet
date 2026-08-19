@@ -3,6 +3,7 @@ import { Trophy, Shield, Users, Zap, LayoutDashboard, Shuffle, Share2, GitFork }
 import { Button } from '@/components/ui/button'
 import { useAuthStore } from '@/stores/useAuthStore'
 import { AuthControl } from '@/components/auth/AuthControl'
+import { ThemeToggle } from '@/components/layout/Header'
 import { Suspense, lazy } from 'react'
 
 const HeroScene = lazy(() => import('@/components/3d/HeroScene').then(m => ({ default: m.HeroScene })))
@@ -31,6 +32,7 @@ export function LandingPage() {
           Tie-Sheet Maker
         </div>
         <div className="flex items-center gap-4">
+          <ThemeToggle />
           {user ? (
             <Button variant="ghost" size="sm" onClick={() => navigate('/dashboard')} className="gap-2">
               <LayoutDashboard className="size-4" />

@@ -38,18 +38,18 @@ export function CreateTournamentPage() {
   const [creating, setCreating] = useState(false)
   
   const user = useAuthStore((s) => s.user)
-  const loading = useAuthStore((s) => s.loading)
+  const isLoading = useAuthStore((s) => s.isLoading)
   const setAuthModalOpen = useAuthStore((s) => s.setAuthModalOpen)
 
   // Redirect if not signed in
   useEffect(() => {
-    if (!loading && !user) {
+    if (!isLoading && !user) {
       setAuthModalOpen(true)
       navigate('/dashboard')
     }
-  }, [user, loading, navigate, setAuthModalOpen])
+  }, [user, isLoading, navigate, setAuthModalOpen])
 
-  if (!loading && !user) return null
+  if (!isLoading && !user) return null
 
   const format = getFormat(formatType)
 

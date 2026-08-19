@@ -15,7 +15,7 @@ let pendingSave: Record<string, any> = {}
  * A custom Zustand storage engine that writes to localStorage immediately
  * for extreme performance, and debounces writes to Supabase `app_state`.
  */
-export function createSupabaseStorage<S>(storeName: string): PersistStorage<S> {
+export function createSupabaseStorage<S>(_storeName: string): PersistStorage<S> {
   return {
     getItem: async (name: string): Promise<StorageValue<S> | null> => {
       // 1. Try memory cache first for instant rehydration if already loaded

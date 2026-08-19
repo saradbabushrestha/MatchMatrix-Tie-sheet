@@ -40,7 +40,7 @@ export function createSoccerTextures() {
   // all triplets of vertices and checking if their distance is exactly the edge length.
   // Edge length for our normalized vertices is approx 1.05146.
   const faceCenters: THREE.Vector3[] = [];
-  const edgeLengthSq = icosahedronVertices[0].distanceToSquared(icosahedronVertices[1]); // Not all are adjacent, but 0 and 1 are 2.0 apart... wait.
+  // Not all are adjacent, but 0 and 1 are 2.0 apart... wait.
   // Actually, vertices 0 is adjacent to 1, 5, 7, 10, 11.
   // Let's use standard Three.js IcosahedronGeometry to get the face centers!
   const icoGeo = new THREE.IcosahedronGeometry(1, 0);
@@ -74,8 +74,6 @@ export function createSoccerTextures() {
       const py = sinLat;
       const pz = cosLat * Math.sin(lon);
       
-      let minD1 = Infinity;
-      let minD2 = Infinity;
       let closestIdx = -1;
       
       // Calculate distances using dot product (acos gives precise spherical distance but dot product is faster)

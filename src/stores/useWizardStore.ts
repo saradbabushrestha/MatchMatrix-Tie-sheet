@@ -9,7 +9,7 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import { createSupabaseStorage } from '@/lib/supabaseStorage'
-import { guessShortName, uid } from '@/lib/utils'
+
 import type { FormatConfig, FormatType } from '@/types'
 import { DEFAULT_FORMAT_CONFIG } from '@/config/formats'
 

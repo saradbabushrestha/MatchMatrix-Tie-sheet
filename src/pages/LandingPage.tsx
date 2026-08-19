@@ -55,12 +55,15 @@ export function LandingPage() {
           </div>
 
           <div className="relative z-10 mx-auto max-w-4xl space-y-8 animate-in fade-in slide-in-from-bottom-8 duration-1000 pointer-events-none">
-            <h1 className="text-5xl font-extrabold tracking-tight sm:text-6xl md:text-7xl lg:text-8xl bg-gradient-to-br from-foreground to-foreground/70 bg-clip-text text-transparent">
+            {/* Soft halo background to ensure text legibility over 3D objects */}
+            <div className="absolute inset-[-100px] -z-10 bg-background/60 blur-[80px] rounded-full pointer-events-none" />
+
+            <h1 className="text-5xl font-extrabold tracking-tight sm:text-6xl md:text-7xl lg:text-8xl bg-gradient-to-br from-foreground to-foreground/80 bg-clip-text text-transparent drop-shadow-md">
               Organize Any Sport, <br className="hidden sm:block" />
               <span className="bg-gradient-to-r from-primary to-purple-500 bg-clip-text text-transparent">Effortlessly.</span>
             </h1>
             
-            <p className="mx-auto max-w-2xl text-lg text-muted-foreground sm:text-xl leading-relaxed">
+            <p className="mx-auto max-w-2xl text-lg text-foreground/90 sm:text-xl leading-relaxed drop-shadow-md font-medium">
               Create professional tournaments in minutes. Automatically generate fixtures, interactive brackets, and live standings for football, basketball, futsal, or any custom sport.
             </p>
 

@@ -5,7 +5,7 @@ import * as THREE from 'three'
 import { createBasketballTextures, createSoccerTextures, createTennisTextures } from './textures'
 
 function TrophyShape() {
-  const trophyMaterial = useMemo(() => new THREE.MeshPhysicalMaterial({
+  const goldMaterial = useMemo(() => new THREE.MeshPhysicalMaterial({
     color: '#fbbf24', // Amber 400 (Gold)
     metalness: 1.0,
     roughness: 0.1,
@@ -14,49 +14,139 @@ function TrophyShape() {
     envMapIntensity: 2.5, // High reflections
   }), [])
 
-  const points = useMemo(() => {
-    const pts: THREE.Vector2[] = [];
+  const baseMaterial = useMemo(() => new THREE.MeshStandardMaterial({
+    color: '#0f172a', // Slate 900 (Dark marble/wood)
+    roughness: 0.7,
+    metalness: 0.2,
+  }), [])
+
+  const silverMaterial = useMemo(() => new THREE.MeshPhysicalMaterial({
+    color: '#e2e8f0', // Slate 200 (Silver)
+    metalness: 1.0,
+    roughness: 0.2,
+    envMapIntensity: 2.0,
+  }), [])
+
+  const cupPoints = useMemo(() => {
+    const path = new THREE.CurvePath<THREE.Vector2>();
     
-    // Smooth spline for the trophy profile
-    const profilePoints = [
-      new THREE.Vector2(0, 0),
-      new THREE.Vector2(1.2, 0),
-      new THREE.Vector2(1.2, 0.2),
-      new THREE.Vector2(0.9, 0.3),
-      new THREE.Vector2(0.3, 0.6),
-      new THREE.Vector2(0.3, 2.0),
-      new THREE.Vector2(0.6, 2.1),
-      new THREE.Vector2(1.2, 2.4),
-      new THREE.Vector2(1.6, 3.2),
-      new THREE.Vector2(1.8, 4.2),
-      new THREE.Vector2(1.7, 4.3),
-      new THREE.Vector2(1.5, 4.3),
+    // Foot base
+    path.add(new THREE.LineCurve(new THREE.Vector2(0, 0), new THREE.Vector2(0.8, 0)));
+    path.add(new THREE.LineCurve(new THREE.Vector2(0.8, 0), new THREE.Vector2(0.8, 0.1)));
+    
+    // Foot slope to stem
+    path.add(new THREE.CubicBezierCurve(
+      new THREE.Vector2(0.8, 0.1),
+      new THREE.Vector2(0.7, 0.3),
+      new THREE.Vector2(0.3, 0.3),
+      new THREE.Vector2(0.2, 0.5)
+    ));
+    
+    // Lower Stem
+    path.add(new THREE.LineCurve(new THREE.Vector2(0.2, 0.5), new THREE.Vector2(0.2, 1.0)));
+    
+    // Decorative Node on stem
+    path.add(new THREE.CubicBezierCurve(
+      new THREE.Vector2(0.2, 1.0),
+      new THREE.Vector2(0.5, 1.1),
+      new THREE.Vector2(0.5, 1.3),
+      new THREE.Vector2(0.2, 1.4)
+    ));
+    
+    // Upper Stem
+    path.add(new THREE.LineCurve(new THREE.Vector2(0.2, 1.4), new THREE.Vector2(0.2, 1.7)));
+    
+    // Bowl bottom curve
+    path.add(new THREE.CubicBezierCurve(
+      new THREE.Vector2(0.2, 1.7),
+      new THREE.Vector2(0.8, 1.8),
+      new THREE.Vector2(1.2, 2.5),
+      new THREE.Vector2(1.4, 3.2)
+    ));
+    
+    // Bowl upper straightish
+    path.add(new THREE.QuadraticBezierCurve(
       new THREE.Vector2(1.4, 3.2),
-      new THREE.Vector2(0, 2.2),
-    ];
+      new THREE.Vector2(1.5, 3.8),
+      new THREE.Vector2(1.6, 4.0)
+    ));
     
-    // Generate a smooth spline curve from the profile points
-    const curve = new THREE.SplineCurve(profilePoints);
-    const smoothPoints = curve.getPoints(80); // 80 segments for perfect smoothness
+    // Rim outward lip
+    path.add(new THREE.LineCurve(new THREE.Vector2(1.6, 4.0), new THREE.Vector2(1.75, 4.1)));
+    path.add(new THREE.LineCurve(new THREE.Vector2(1.75, 4.1), new THREE.Vector2(1.75, 4.15)));
+    path.add(new THREE.LineCurve(new THREE.Vector2(1.75, 4.15), new THREE.Vector2(1.6, 4.2)));
     
-    // Scale everything down
-    return smoothPoints.map(p => new THREE.Vector2(p.x * 0.55, p.y * 0.55))
+    // Close the top interior
+    path.add(new THREE.LineCurve(new THREE.Vector2(1.6, 4.2), new THREE.Vector2(0, 4.2)));
+
+    // Scale down
+    return path.getPoints(120).map(p => new THREE.Vector2(p.x * 0.6, p.y * 0.6));
+  }, [])
+
+  const lidPoints = useMemo(() => {
+    const path = new THREE.CurvePath<THREE.Vector2>();
+    path.add(new THREE.LineCurve(new THREE.Vector2(0, 0), new THREE.Vector2(1.6, 0)));
+    path.add(new THREE.CubicBezierCurve(
+      new THREE.Vector2(1.6, 0),
+      new THREE.Vector2(1.5, 0.3),
+      new THREE.Vector2(0.8, 0.7),
+      new THREE.Vector2(0.2, 1.0)
+    ));
+    path.add(new THREE.LineCurve(new THREE.Vector2(0.2, 1.0), new THREE.Vector2(0, 1.0)));
+    return path.getPoints(40).map(p => new THREE.Vector2(p.x * 0.6, p.y * 0.6));
+  }, [])
+
+  const handleCurve = useMemo(() => {
+    return new THREE.CubicBezierCurve3(
+      new THREE.Vector3(0.5, 1.1, 0), // attach at lower bowl
+      new THREE.Vector3(1.8, 1.1, 0), // pull out
+      new THREE.Vector3(1.8, 2.4, 0), // pull up and out
+      new THREE.Vector3(0.95, 2.4, 0) // attach at rim
+    );
   }, [])
 
   return (
-    <group position={[0, -1, 0]}>
-      {/* Main body (lathe) */}
-      <mesh material={trophyMaterial} castShadow>
-        <latheGeometry args={[points, 128]} /> {/* High segment count for smooth rounded look */}
-      </mesh>
-      
-      {/* Handles */}
-      <mesh material={trophyMaterial} position={[-0.8, 1.8, 0]} rotation={[0, 0, Math.PI / 6]} castShadow>
-        <torusGeometry args={[0.5, 0.08, 32, 128]} />
-      </mesh>
-      <mesh material={trophyMaterial} position={[0.8, 1.8, 0]} rotation={[0, 0, -Math.PI / 6]} castShadow>
-        <torusGeometry args={[0.5, 0.08, 32, 128]} />
-      </mesh>
+    <group position={[0, -1.5, 0]}>
+      {/* Dark Octagonal Base */}
+      <group position={[0, 0, 0]}>
+        <mesh material={baseMaterial} position={[0, 0.2, 0]} castShadow>
+          <cylinderGeometry args={[1.0, 1.2, 0.4, 8]} />
+        </mesh>
+        <mesh material={baseMaterial} position={[0, 0.5, 0]} castShadow>
+          <cylinderGeometry args={[0.8, 0.9, 0.2, 8]} />
+        </mesh>
+        {/* Silver plaque on base */}
+        <mesh material={silverMaterial} position={[0, 0.2, 1.15]} rotation={[0, 0, 0]}>
+          <boxGeometry args={[0.8, 0.2, 0.05]} />
+        </mesh>
+      </group>
+
+      {/* Gold Cup Assembly */}
+      <group position={[0, 0.6, 0]}>
+        {/* Main body (lathe) */}
+        <mesh material={goldMaterial} castShadow>
+          <latheGeometry args={[cupPoints, 128]} />
+        </mesh>
+        
+        {/* Elegant Sweeping Handles */}
+        <mesh material={goldMaterial} castShadow>
+          <tubeGeometry args={[handleCurve, 64, 0.06, 16, false]} />
+        </mesh>
+        <mesh material={goldMaterial} rotation={[0, Math.PI, 0]} castShadow>
+          <tubeGeometry args={[handleCurve, 64, 0.06, 16, false]} />
+        </mesh>
+
+        {/* Lid */}
+        <group position={[0, 2.52, 0]}>
+          <mesh material={goldMaterial} castShadow>
+            <latheGeometry args={[lidPoints, 64]} />
+          </mesh>
+          {/* Top finial sphere */}
+          <mesh material={silverMaterial} position={[0, 0.7, 0]} castShadow>
+            <sphereGeometry args={[0.15, 32, 32]} />
+          </mesh>
+        </group>
+      </group>
     </group>
   )
 }

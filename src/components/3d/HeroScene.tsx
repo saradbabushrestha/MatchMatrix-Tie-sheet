@@ -263,8 +263,8 @@ export function HeroScene() {
           config={{ mass: 2, tension: 500 }}
           snap={{ mass: 4, tension: 1500 }}
           rotation={[0, 0.3, 0]}
-          polar={[-Math.PI / 3, Math.PI / 3]}
-          azimuth={[-Math.PI / 1.4, Math.PI / 2]}
+          polar={[-Math.PI / 8, Math.PI / 8]} // Limit vertical rotation to 22.5 degrees
+          azimuth={[-Math.PI / 4, Math.PI / 4]} // Limit horizontal rotation to 45 degrees
         >
           <Shapes />
         </PresentationControls>

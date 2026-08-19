@@ -6,25 +6,45 @@ import { createBasketballTextures, createSoccerTextures, createTennisTextures } 
 
 function TrophyShape() {
   const goldMaterial = useMemo(() => new THREE.MeshPhysicalMaterial({
-    color: '#fbbf24', // Amber 400 (Gold)
+    color: '#ffb300', // Rich vibrant gold
+    emissive: '#421600', // Subtle warm glow in crevices
+    emissiveIntensity: 0.2,
     metalness: 1.0,
-    roughness: 0.1,
+    roughness: 0.15,
     clearcoat: 1.0,
     clearcoatRoughness: 0.1,
-    envMapIntensity: 2.5, // High reflections
+    envMapIntensity: 2.5,
   }), [])
 
-  const baseMaterial = useMemo(() => new THREE.MeshStandardMaterial({
-    color: '#0f172a', // Slate 900 (Dark marble/wood)
-    roughness: 0.7,
-    metalness: 0.2,
+  const woodMaterial = useMemo(() => new THREE.MeshStandardMaterial({
+    color: '#3e1a06', // Rich mahogany wood
+    roughness: 0.9,
+    metalness: 0.1,
   }), [])
 
   const silverMaterial = useMemo(() => new THREE.MeshPhysicalMaterial({
-    color: '#e2e8f0', // Slate 200 (Silver)
+    color: '#f8fafc', // Bright Silver
     metalness: 1.0,
-    roughness: 0.2,
-    envMapIntensity: 2.0,
+    roughness: 0.1,
+    envMapIntensity: 3.0,
+  }), [])
+
+  const rubyMaterial = useMemo(() => new THREE.MeshPhysicalMaterial({
+    color: '#e11d48', // Deep Ruby Red
+    metalness: 0.2,
+    roughness: 0.05,
+    transmission: 0.9, // Glass-like transparency
+    ior: 1.5,
+    thickness: 0.5,
+  }), [])
+
+  const sapphireMaterial = useMemo(() => new THREE.MeshPhysicalMaterial({
+    color: '#2563eb', // Royal Sapphire Blue
+    metalness: 0.2,
+    roughness: 0.05,
+    transmission: 0.9,
+    ior: 1.5,
+    thickness: 0.5,
   }), [])
 
   const cupPoints = useMemo(() => {
@@ -107,12 +127,12 @@ function TrophyShape() {
 
   return (
     <group position={[0, -1.5, 0]}>
-      {/* Dark Octagonal Base */}
+      {/* Mahogany Wood Octagonal Base */}
       <group position={[0, 0, 0]}>
-        <mesh material={baseMaterial} position={[0, 0.2, 0]} castShadow>
+        <mesh material={woodMaterial} position={[0, 0.2, 0]} castShadow>
           <cylinderGeometry args={[1.0, 1.2, 0.4, 8]} />
         </mesh>
-        <mesh material={baseMaterial} position={[0, 0.5, 0]} castShadow>
+        <mesh material={woodMaterial} position={[0, 0.5, 0]} castShadow>
           <cylinderGeometry args={[0.8, 0.9, 0.2, 8]} />
         </mesh>
         {/* Silver plaque on base */}
@@ -128,6 +148,14 @@ function TrophyShape() {
           <latheGeometry args={[cupPoints, 128]} />
         </mesh>
         
+        {/* Colored Gemstone Rings */}
+        <mesh material={sapphireMaterial} position={[0, 0.05, 0]} castShadow>
+          <torusGeometry args={[0.49, 0.05, 32, 64]} />
+        </mesh>
+        <mesh material={rubyMaterial} position={[0, 0.72, 0]} castShadow>
+          <torusGeometry args={[0.26, 0.04, 32, 64]} />
+        </mesh>
+
         {/* Elegant Sweeping Handles */}
         <mesh material={goldMaterial} castShadow>
           <tubeGeometry args={[handleCurve, 64, 0.06, 16, false]} />
@@ -135,6 +163,26 @@ function TrophyShape() {
         <mesh material={goldMaterial} rotation={[0, Math.PI, 0]} castShadow>
           <tubeGeometry args={[handleCurve, 64, 0.06, 16, false]} />
         </mesh>
+
+        {/* Decorative Ribbons on Handles */}
+        {/* Left ribbons */}
+        <group position={[-1.7, 1.8, 0]} rotation={[0, 0, 0.2]}>
+           <mesh material={rubyMaterial} position={[-0.05, -0.4, 0.04]} rotation={[0, 0, -0.05]} castShadow>
+             <boxGeometry args={[0.06, 1.0, 0.01]} />
+           </mesh>
+           <mesh material={sapphireMaterial} position={[0.05, -0.3, -0.04]} rotation={[0, 0, 0.1]} castShadow>
+             <boxGeometry args={[0.06, 0.8, 0.01]} />
+           </mesh>
+        </group>
+        {/* Right ribbons */}
+        <group position={[1.7, 1.8, 0]} rotation={[0, 0, -0.2]}>
+           <mesh material={rubyMaterial} position={[0.05, -0.4, 0.04]} rotation={[0, 0, 0.05]} castShadow>
+             <boxGeometry args={[0.06, 1.0, 0.01]} />
+           </mesh>
+           <mesh material={sapphireMaterial} position={[-0.05, -0.3, -0.04]} rotation={[0, 0, -0.1]} castShadow>
+             <boxGeometry args={[0.06, 0.8, 0.01]} />
+           </mesh>
+        </group>
 
         {/* Lid */}
         <group position={[0, 2.52, 0]}>

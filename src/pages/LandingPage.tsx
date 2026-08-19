@@ -44,7 +44,7 @@ export function LandingPage() {
         </div>
       </header>
 
-      <main className="flex-1">
+      <main className="flex-1 overflow-x-hidden">
         {/* Hero Section */}
         <section className="relative px-6 pt-24 pb-32 text-center lg:pt-36 lg:pb-40">
           {/* Background Glow & 3D Scene */}
@@ -58,7 +58,7 @@ export function LandingPage() {
             {/* Soft halo background to ensure text legibility over 3D objects */}
             <div className="absolute inset-[-100px] -z-10 bg-background/60 blur-[80px] rounded-full pointer-events-none" />
 
-            <h1 className="text-5xl font-extrabold tracking-tight sm:text-6xl md:text-7xl lg:text-8xl bg-gradient-to-br from-foreground to-foreground/80 bg-clip-text text-transparent drop-shadow-md">
+            <h1 className="text-4xl font-extrabold tracking-tight sm:text-6xl md:text-7xl lg:text-8xl bg-gradient-to-br from-foreground to-foreground/80 bg-clip-text text-transparent drop-shadow-md">
               Organize Any Sport, <br className="hidden sm:block" />
               <span className="bg-gradient-to-r from-primary to-purple-500 bg-clip-text text-transparent">Effortlessly.</span>
             </h1>

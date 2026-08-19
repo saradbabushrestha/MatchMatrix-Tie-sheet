@@ -1,5 +1,5 @@
 import { useRef, useMemo } from 'react'
-import { Canvas, useFrame } from '@react-three/fiber'
+import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import { Float, Environment, PerspectiveCamera, PresentationControls, ContactShadows } from '@react-three/drei'
 import * as THREE from 'three'
 import { createBasketballTextures, createSoccerTextures, createTennisTextures } from './textures'
@@ -258,6 +258,11 @@ function TennisBall() {
 
 function Shapes() {
   const groupRef = useRef<THREE.Group>(null)
+  const { viewport } = useThree()
+  
+  // Dynamically scale the scene down on narrow screens (mobile)
+  const isMobile = viewport.width < 8
+  const responsiveScale = isMobile ? Math.max(0.4, viewport.width / 10) : 1
 
   useFrame((state) => {
     if (groupRef.current) {
@@ -266,7 +271,7 @@ function Shapes() {
   })
 
   return (
-    <group ref={groupRef}>
+    <group ref={groupRef} scale={responsiveScale} position={[0, isMobile ? -0.5 : 0, 0]}>
       {/* Central Trophy */}
       <Float speed={2} rotationIntensity={0.5} floatIntensity={1} position={[0, -0.5, 0]}>
         <TrophyShape />

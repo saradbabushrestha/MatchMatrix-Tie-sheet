@@ -281,7 +281,7 @@ function Shapes() {
         <mesh castShadow>
           <sphereGeometry args={[0.4, 32, 32]} />
           <meshPhysicalMaterial 
-            color="#ffffff"
+            color="#d1d5db"
             transmission={0.95}
             opacity={1}
             metalness={0.1}

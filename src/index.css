@@ -5,86 +5,63 @@
 @layer base {
   :root {
     --background: 0 0% 100%;
-    --foreground: 222 22% 11%;
-
+    --foreground: 240 10% 3.9%;
     --card: 0 0% 100%;
-    --card-foreground: 222 22% 11%;
-
+    --card-foreground: 240 10% 3.9%;
     --popover: 0 0% 100%;
-    --popover-foreground: 222 22% 11%;
-
-    --primary: 158 74% 34%;
-    --primary-foreground: 150 60% 98%;
-
-    --secondary: 220 14% 96%;
-    --secondary-foreground: 222 20% 20%;
-
-    --muted: 220 14% 96%;
-    --muted-foreground: 220 9% 43%;
-
-    --accent: 220 14% 94%;
-    --accent-foreground: 222 20% 20%;
-
-    --destructive: 0 72% 46%;
-    --destructive-foreground: 0 0% 100%;
-
-    --success: 158 74% 34%;
-    --success-foreground: 0 0% 100%;
-
-    --warning: 32 95% 44%;
-    --warning-foreground: 0 0% 100%;
-
-    --border: 220 13% 90%;
-    --input: 220 13% 88%;
-    --ring: 158 74% 34%;
-
-    --sidebar: 220 20% 98%;
-    --sidebar-foreground: 222 20% 24%;
-    --sidebar-border: 220 13% 90%;
-    --sidebar-accent: 220 14% 94%;
-
-    --radius: 0.625rem;
+    --popover-foreground: 240 10% 3.9%;
+    --primary: 243 75% 59%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --success: 142 71% 45%;
+    --success-foreground: 0 0% 98%;
+    --warning: 38 92% 50%;
+    --warning-foreground: 0 0% 98%;
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 243 75% 59%;
+    --sidebar: 240 5.9% 98%;
+    --sidebar-foreground: 240 10% 3.9%;
+    --sidebar-border: 240 5.9% 90%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --radius: 0.75rem;
   }
 
   .dark {
-    --background: 222 24% 7%;
-    --foreground: 210 20% 96%;
-
-    --card: 222 22% 10%;
-    --card-foreground: 210 20% 96%;
-
-    --popover: 222 24% 11%;
-    --popover-foreground: 210 20% 96%;
-
-    --primary: 158 64% 45%;
-    --primary-foreground: 222 30% 8%;
-
-    --secondary: 220 16% 17%;
-    --secondary-foreground: 210 20% 94%;
-
-    --muted: 220 16% 15%;
-    --muted-foreground: 218 12% 62%;
-
-    --accent: 220 16% 19%;
-    --accent-foreground: 210 20% 94%;
-
-    --destructive: 0 72% 55%;
-    --destructive-foreground: 0 0% 100%;
-
-    --success: 158 64% 45%;
-    --success-foreground: 222 30% 8%;
-
-    --warning: 36 94% 56%;
-    --warning-foreground: 222 30% 8%;
-
-    --border: 220 14% 20%;
-    --input: 220 14% 22%;
-    --ring: 158 64% 45%;
-
-    --sidebar: 222 24% 9%;
-    --sidebar-foreground: 210 16% 84%;
-    --sidebar-border: 220 14% 18%;
-    --sidebar-accent: 220 16% 15%;
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 243 75% 59%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+    --accent: 240 3.7% 15.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --success: 142 71% 29%;
+    --success-foreground: 0 0% 98%;
+    --warning: 38 92% 38%;
+    --warning-foreground: 0 0% 98%;
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 243 75% 59%;
+    --sidebar: 240 10% 3.9%;
+    --sidebar-foreground: 0 0% 98%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-accent: 240 3.7% 15.9%;
   }
 
   * {
@@ -143,10 +120,11 @@
 @layer components {
   /* Faint grid used behind hero/empty states. */
   .bg-grid {
-    background-image:
-      linear-gradient(to right, hsl(var(--border) / 0.5) 1px, transparent 1px),
-      linear-gradient(to bottom, hsl(var(--border) / 0.5) 1px, transparent 1px);
-    background-size: 28px 28px;
+    background-size: 40px 40px;
+    background-image: linear-gradient(to right, hsl(var(--border) / 0.4) 1px, transparent 1px),
+      linear-gradient(to bottom, hsl(var(--border) / 0.4) 1px, transparent 1px);
+    mask-image: radial-gradient(circle at center, black, transparent 80%);
+    -webkit-mask-image: radial-gradient(circle at center, black, transparent 80%);
   }
 
   .skeleton {

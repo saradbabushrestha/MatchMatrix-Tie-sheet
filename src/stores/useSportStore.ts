@@ -9,6 +9,7 @@ import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import type { CustomSportDraft, SportConfig } from '@/types'
 import { BUILT_IN_SPORTS } from '@/config/sports'
+import { createSupabaseStorage } from '@/lib/supabaseStorage'
 import { nowISO, slugify, uid } from '@/lib/utils'
 
 interface SportState {
@@ -46,7 +47,10 @@ export const useSportStore = create<SportState>()(
       removeSport: (id) =>
         set((s) => ({ customSports: s.customSports.filter((sport) => sport.id !== id) })),
     }),
-    { name: 'tiesheet.sports.v1' },
+    { 
+      name: 'tiesheet.sports.v1',
+      storage: createSupabaseStorage<SportState>('tiesheet.sports.v1')
+    },
   ),
 )
 

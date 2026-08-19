@@ -6,6 +6,8 @@
  * into `replaceMatches` with the recomputed set.
  */
 
+import { advanceBracket, scheduleMatches } from '@/engine/schedule'
+import { createSupabaseStorage } from '@/lib/supabaseStorage'
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import type { Group, Match, MatchScore, MatchStatus, Round, Side } from '@/types'
@@ -187,6 +189,9 @@ export const useMatchStore = create<MatchState>()(
           groups: [...s.groups, ...groups],
         })),
     }),
-    { name: 'tiesheet.matches.v1' },
+    { 
+      name: 'tiesheet.matches.v1',
+      storage: createSupabaseStorage<MatchState>('tiesheet.matches.v1')
+    },
   ),
 )

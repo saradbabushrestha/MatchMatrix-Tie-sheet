@@ -1,7 +1,9 @@
 import { createHashRouter, RouterProvider } from 'react-router-dom'
 import { AppShell, PublicShell } from '@/components/layout/AppShell'
 import { ErrorBoundary } from '@/components/layout/ErrorBoundary'
-import { HomePage } from '@/pages/HomePage'
+import { AuthProvider } from '@/components/auth/AuthProvider'
+import { LandingPage } from '@/pages/LandingPage'
+import { TournamentsListPage } from '@/pages/TournamentsListPage'
 import { CreateTournamentPage } from '@/pages/CreateTournamentPage'
 import { DashboardPage } from '@/pages/DashboardPage'
 import { TeamsPage } from '@/pages/TeamsPage'
@@ -26,7 +28,7 @@ const router = createHashRouter([
   {
     element: <AppShell />,
     children: [
-      { path: '/', element: <HomePage /> },
+      { path: '/dashboard', element: <TournamentsListPage /> },
       { path: '/new', element: <CreateTournamentPage /> },
       { path: '/t/:tournamentId', element: <DashboardPage /> },
       { path: '/t/:tournamentId/teams', element: <TeamsPage /> },
@@ -42,14 +44,19 @@ const router = createHashRouter([
   },
   {
     element: <PublicShell />,
-    children: [{ path: '/p/:slug', element: <PublicTournamentPage /> }],
+    children: [
+      { path: '/', element: <LandingPage /> },
+      { path: '/p/:slug', element: <PublicTournamentPage /> }
+    ],
   },
 ])
 
 export function App() {
   return (
     <ErrorBoundary label="The application">
-      <RouterProvider router={router} />
+      <AuthProvider>
+        <RouterProvider router={router} />
+      </AuthProvider>
     </ErrorBoundary>
   )
 }

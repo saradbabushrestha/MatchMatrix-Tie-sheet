@@ -24,6 +24,9 @@ import { useVenueStore } from '@/stores/useVenueStore'
 import { deleteTournament } from '@/services/tournamentService'
 import { getFormat, BEST_OF_OPTIONS } from '@/config/formats'
 import { pointsSummary } from '@/services/tournamentService'
+import { useCollaboratorStore } from '@/stores/useCollaboratorStore'
+import { useAuthStore } from '@/stores/useAuthStore'
+import { useEffect } from 'react'
 
 /** Tournament settings: details, rules, venues, officials, deletion. */
 export function SettingsPage() {
@@ -45,6 +48,20 @@ function SettingsView({ tournament, data }: TournamentViewProps) {
 
   const { sport, venues, officials, matches } = data
   const format = getFormat(tournament.formatType)
+  const user = useAuthStore((s) => s.user)
+  const { collaborators, fetchCollaborators, addCollaborator, removeCollaborator, isLoading: isCollabLoading } = useCollaboratorStore()
+  
+  const [inviteEmail, setInviteEmail] = useState('')
+  const [inviteRole, setInviteRole] = useState<'editor'|'viewer'>('editor')
+
+  useEffect(() => {
+    if (tournament.id) fetchCollaborators(tournament.id)
+  }, [tournament.id, fetchCollaborators])
+
+  const tournamentCollabs = collaborators[tournament.id] || []
+  // We approximate ownership by checking if the user is the ownerId in the draft (or if it doesn't exist, we assume owner)
+  // For safety, we only show invite UI if they are the actual owner (which is currently stored in app_state by default)
+  const isOwner = tournament.ownerId === user?.id || !tournament.ownerId // If no ownerId is set on old tournaments, assume owner
 
   return (
     <div className="space-y-6">
@@ -456,7 +473,68 @@ function SettingsView({ tournament, data }: TournamentViewProps) {
         </CardContent>
       </Card>
 
-      {/* Danger zone */}
+      {/* Collaborators */}
+      {isOwner && (
+        <Card>
+          <CardHeader>
+            <CardTitle>Collaborators</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="flex gap-2 items-end">
+              <Field label="Invite User via Email" className="flex-1">
+                <Input
+                  type="email"
+                  placeholder="colleague@example.com"
+                  value={inviteEmail}
+                  onChange={(e) => setInviteEmail(e.target.value)}
+                />
+              </Field>
+              <Field label="Role" className="w-32">
+                <Select value={inviteRole} onValueChange={(v: any) => setInviteRole(v)}>
+                  <SelectTrigger><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="editor">Editor</SelectItem>
+                    <SelectItem value="viewer">Viewer</SelectItem>
+                  </SelectContent>
+                </Select>
+              </Field>
+              <Button 
+                onClick={async () => {
+                  if (!inviteEmail) return
+                  const res = await addCollaborator(tournament.id, inviteEmail, inviteRole)
+                  if (res.success) {
+                    toast.success('Collaborator added!')
+                    setInviteEmail('')
+                  } else {
+                    toast.error(res.error || 'Failed to add collaborator.')
+                  }
+                }}
+                disabled={isCollabLoading || !inviteEmail}
+              >
+                Invite
+              </Button>
+            </div>
+
+            {tournamentCollabs.length > 0 && (
+              <div className="mt-4 space-y-2">
+                {tournamentCollabs.map((collab) => (
+                  <div key={collab.user_id} className="flex justify-between items-center p-3 border rounded-md">
+                    <div>
+                      <p className="font-medium">{collab.users?.email || 'Unknown User'}</p>
+                      <Badge variant="outline" className="text-xs uppercase">{collab.role}</Badge>
+                    </div>
+                    <Button variant="ghost" size="icon" className="text-destructive" onClick={() => removeCollaborator(tournament.id, collab.user_id)}>
+                      <Trash2 className="w-4 h-4" />
+                    </Button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Danger Zone */}
       <Card className="border-destructive/40">
         <CardHeader className="pb-3">
           <CardTitle className="text-destructive">Delete this tournament</CardTitle>
@@ -484,7 +562,7 @@ function SettingsView({ tournament, data }: TournamentViewProps) {
           const name = tournament.name
           deleteTournament(tournament.id)
           toast.success(`"${name}" deleted`)
-          navigate('/')
+          navigate('/dashboard')
         }}
       />
     </div>

@@ -9,6 +9,7 @@ import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import type { Participant, Player, Team } from '@/types'
 import { colorFor, guessShortName, nowISO, uid } from '@/lib/utils'
+import { createSupabaseStorage } from '@/lib/supabaseStorage'
 
 export interface TeamDraft {
   tournamentId: string
@@ -190,7 +191,10 @@ export const useTeamStore = create<TeamState>()(
       loadTeams: (teams, players) =>
         set((s) => ({ teams: [...s.teams, ...teams], players: [...s.players, ...players] })),
     }),
-    { name: 'tiesheet.teams.v1' },
+    { 
+      name: 'tiesheet.teams.v1',
+      storage: createSupabaseStorage<TeamState>('tiesheet.teams.v1')
+    },
   ),
 )
 

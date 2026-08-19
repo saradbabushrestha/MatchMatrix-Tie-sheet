@@ -110,8 +110,8 @@ export function Sidebar() {
                 'flex items-center gap-2.5 rounded-md px-2.5 py-2 text-sm font-medium transition-colors',
                 collapsed && 'justify-center px-0',
                 isActive
-                  ? 'bg-sidebar-accent text-foreground'
-                  : 'text-sidebar-foreground hover:bg-sidebar-accent/60 hover:text-foreground',
+                  ? 'bg-sidebar-accent text-primary shadow-sm'
+                  : 'text-sidebar-foreground hover:bg-sidebar-accent/50 hover:text-foreground',
               )
             }
             title={collapsed ? item.label : undefined}

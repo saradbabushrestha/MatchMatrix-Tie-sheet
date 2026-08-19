@@ -66,6 +66,7 @@ export interface FormatConfig {
 /** A tournament. */
 export interface Tournament {
   id: string
+  ownerId?: string
   /** URL-safe identifier used by the public page. */
   slug: string
   name: string

@@ -11,6 +11,8 @@ import { useSport } from '@/stores/useSportStore'
 import { generateTournamentFixtures } from '@/services/tournamentService'
 import { getFormat } from '@/config/formats'
 import { cn, guessShortName } from '@/lib/utils'
+import { useAuthStore } from '@/stores/useAuthStore'
+import { useEffect } from 'react'
 import { StepInfo } from '@/components/wizard/StepInfo'
 import { StepFormat } from '@/components/wizard/StepFormat'
 import { StepEntrants } from '@/components/wizard/StepEntrants'
@@ -34,6 +36,20 @@ export function CreateTournamentPage() {
   const sport = useSport(info.sportId)
   const [cancelOpen, setCancelOpen] = useState(false)
   const [creating, setCreating] = useState(false)
+  
+  const user = useAuthStore((s) => s.user)
+  const loading = useAuthStore((s) => s.loading)
+  const setAuthModalOpen = useAuthStore((s) => s.setAuthModalOpen)
+
+  // Redirect if not signed in
+  useEffect(() => {
+    if (!loading && !user) {
+      setAuthModalOpen(true)
+      navigate('/dashboard')
+    }
+  }, [user, loading, navigate, setAuthModalOpen])
+
+  if (!loading && !user) return null
 
   const format = getFormat(formatType)
 
@@ -241,7 +257,7 @@ export function CreateTournamentPage() {
         destructive
         onConfirm={() => {
           reset()
-          navigate('/')
+          navigate('/dashboard')
         }}
       />
 

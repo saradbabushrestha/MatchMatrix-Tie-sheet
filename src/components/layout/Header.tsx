@@ -30,6 +30,7 @@ import { useTournamentNav } from './Sidebar'
 import { cn } from '@/lib/utils'
 import { useState } from 'react'
 import { NavLink } from 'react-router-dom'
+import { AuthControl } from '@/components/auth/AuthControl'
 
 export function Header() {
   const { tournamentId } = useParams()
@@ -42,7 +43,7 @@ export function Header() {
   return (
     <header
       data-app-header
-      className="sticky top-0 z-30 flex h-14 shrink-0 items-center gap-2 border-b border-border bg-background/85 px-3 backdrop-blur"
+      className="sticky top-0 z-30 flex h-14 shrink-0 items-center gap-2 border-b border-border/40 bg-background/60 px-3 backdrop-blur-md transition-all"
     >
       {/* Mobile: open the nav in a drawer, since the sidebar is hidden. */}
       {tournament && (
@@ -100,13 +101,13 @@ export function Header() {
 
       {tournament ? (
         <Button variant="ghost" size="sm" asChild className="text-muted-foreground">
-          <Link to="/">
+          <Link to="/dashboard">
             <ChevronLeft />
             <span className="hidden sm:inline">All tournaments</span>
           </Link>
         </Button>
       ) : (
-        <Link to="/" className="flex items-center gap-2 px-1 font-semibold">
+        <Link to="/dashboard" className="flex items-center gap-2 px-1 font-semibold">
           <span className="flex size-7 items-center justify-center rounded-md bg-primary text-primary-foreground">
             <Trophy className="size-4" />
           </span>
@@ -140,6 +141,7 @@ export function Header() {
       )}
 
       <ThemeToggle />
+      <AuthControl />
 
       {!tournament && (
         <Button size="sm" onClick={() => navigate('/new')}>

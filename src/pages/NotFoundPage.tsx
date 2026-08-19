@@ -10,7 +10,7 @@ export function NotFoundPage() {
       icon={<Compass />}
       title="Page not found"
       description="That link does not point anywhere in the app."
-      action={{ label: 'Back to tournaments', onClick: () => navigate('/') }}
+      action={{ label: 'Back to tournaments', onClick: () => navigate('/dashboard') }}
     />
   )
 }

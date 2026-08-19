@@ -4,6 +4,7 @@ import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import type { Official, Venue } from '@/types'
 import { nowISO, uid } from '@/lib/utils'
+import { createSupabaseStorage } from '@/lib/supabaseStorage'
 
 interface VenueState {
   venues: Venue[]
@@ -72,6 +73,9 @@ export const useVenueStore = create<VenueState>()(
       loadVenues: (venues, officials) =>
         set((s) => ({ venues: [...s.venues, ...venues], officials: [...s.officials, ...officials] })),
     }),
-    { name: 'tiesheet.venues.v1' },
+    { 
+      name: 'tiesheet.venues.v1',
+      storage: createSupabaseStorage<VenueState>('tiesheet.venues.v1')
+    },
   ),
 )

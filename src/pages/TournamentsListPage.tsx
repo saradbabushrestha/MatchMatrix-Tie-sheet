@@ -33,14 +33,15 @@ import { useSportStore, resolveSport } from '@/stores/useSportStore'
 import { useMatchStore } from '@/stores/useMatchStore'
 import { useTeamStore } from '@/stores/useTeamStore'
 import { useUIStore } from '@/stores/useUIStore'
+import { useAuthStore } from '@/stores/useAuthStore'
 import { deleteTournament } from '@/services/tournamentService'
 import { getFormat } from '@/config/formats'
 import { loadSeedData } from '@/data/seed'
 import { formatDateLong } from '@/lib/date'
 import type { Tournament } from '@/types'
 
-/** The tournament list — the app's front door. */
-export function HomePage() {
+/** The tournament list — the app's dashboard. */
+export function TournamentsListPage() {
   const navigate = useNavigate()
   const tournaments = useTournamentStore((s) => s.tournaments)
   const duplicateTournament = useTournamentStore((s) => s.duplicateTournament)
@@ -49,6 +50,8 @@ export function HomePage() {
   const teams = useTeamStore((s) => s.teams)
   const players = useTeamStore((s) => s.players)
   const { seedLoaded, markSeedLoaded } = useUIStore()
+  const user = useAuthStore((s) => s.user)
+  const setAuthModalOpen = useAuthStore((s) => s.setAuthModalOpen)
 
   const [query, setQuery] = useState('')
   const [deleting, setDeleting] = useState<Tournament | null>(null)
@@ -105,7 +108,13 @@ export function HomePage() {
                 Load demo data
               </Button>
             )}
-            <Button onClick={() => navigate('/new')}>
+            <Button onClick={() => {
+              if (!user) {
+                setAuthModalOpen(true)
+              } else {
+                navigate('/new')
+              }
+            }}>
               <Plus />
               Create Tournament
             </Button>
@@ -122,7 +131,13 @@ export function HomePage() {
             description="Pick a sport, choose a format, add your teams — the fixtures, bracket and standings are generated for you."
             action={{
               label: 'Create your first tournament',
-              onClick: () => navigate('/new'),
+              onClick: () => {
+                if (!user) {
+                  setAuthModalOpen(true)
+                } else {
+                  navigate('/new')
+                }
+              },
               icon: <Plus />,
             }}
             secondaryAction={

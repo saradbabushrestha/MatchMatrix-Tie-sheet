@@ -46,9 +46,9 @@ export function LandingPage() {
 
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="relative overflow-hidden px-6 pt-24 pb-32 text-center lg:pt-36 lg:pb-40">
+        <section className="relative px-6 pt-24 pb-32 text-center lg:pt-36 lg:pb-40">
           {/* Background Glow & 3D Scene */}
-          <div className="absolute inset-0 z-0 overflow-hidden pointer-events-auto">
+          <div className="absolute inset-x-0 top-0 h-[140%] z-0 pointer-events-auto">
             <Suspense fallback={<div className="absolute left-1/2 top-0 h-[800px] w-[800px] -translate-x-1/2 -translate-y-1/2 opacity-30 blur-[100px] bg-gradient-to-b from-primary to-transparent pointer-events-none" />}>
               <HeroScene />
             </Suspense>
@@ -79,15 +79,15 @@ export function LandingPage() {
         </section>
 
         {/* Features Bento Grid */}
-        <section className="mx-auto max-w-7xl px-6 py-24">
-          <div className="text-center mb-16 space-y-4">
+        <section className="relative z-10 mx-auto max-w-7xl px-6 py-24 pointer-events-none">
+          <div className="text-center mb-16 space-y-4 pointer-events-auto">
             <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">Everything you need to run the show</h2>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
               From local leagues to massive knockouts, Tie-Sheet Maker scales with your tournament.
             </p>
           </div>
 
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 pointer-events-auto">
             <FeatureCard 
               icon={<GitFork />}
               title="Instant Brackets"
